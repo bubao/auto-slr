@@ -1,0 +1,15 @@
+{
+	"name": "auto-slr",
+	"version": "0.0.1",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "node ./test/test.js"
+	},
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"lodash": "^4.17.11",
+		"ml-regression": "^4.4.2"
+	}
+}
