@@ -6,10 +6,10 @@ function auto(
 	reference,
 	options,
 	count = 0,
-	tempInput = [],
-	tempReference = [],
 	results = [],
-	regression = () => {}
+	regression,
+	tempInput = [],
+	tempReference = []
 ) {
 	if (count + 1 > input.length) {
 		results.push({
@@ -49,10 +49,10 @@ function auto(
 				reference,
 				options,
 				count,
-				tempInput,
-				tempReference,
 				results,
-				regression
+				regression,
+				tempInput,
+				tempReference
 			);
 		} else {
 			results.push({
@@ -66,8 +66,6 @@ function auto(
 				reference,
 				options,
 				count - 1,
-				[],
-				[],
 				results,
 				regression
 			);
@@ -89,6 +87,6 @@ function verify(regression, tempInput, tempReference, scope = 1, count = 0) {
 	return verify(regression, tempInput, tempReference, scope, count + 1);
 }
 module.exports = (input, reference, options = { scope: 1, decimal: 5 }) => {
-	if (input.length < 2 || input.length !== reference.length) return false;
-	return auto(input, reference, options);
+	if (input.length > 1 || input.length === reference.length)
+		return auto(input, reference, options);
 };
