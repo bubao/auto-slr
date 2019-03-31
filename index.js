@@ -1,4 +1,4 @@
-const { SLR } = require("ml-regression");
+const SimpleLinearRegression = require("ml-regression-simple-linear");
 let status = {};
 
 function auto(
@@ -13,8 +13,7 @@ function auto(
 ) {
 	if (count + 1 > input.length) {
 		results.push({
-			func: status.func,
-			start: status.start,
+			...status,
 			end: tempReference[tempReference.length - 1]
 		});
 		return results;
@@ -28,7 +27,7 @@ function auto(
 			tempInput.push(input[count]);
 			tempReference.push(reference[count]);
 		}
-		regression = new SLR(tempInput, tempReference);
+		regression = new SimpleLinearRegression(tempInput, tempReference);
 		const target = verify(
 			regression,
 			tempInput,
@@ -39,9 +38,12 @@ function auto(
 			count++;
 			status = {
 				start: tempReference[0],
-				func: regression
+				toString: regression
 					.toString(options.decimal)
 					.replace("f(x) = ", ""),
+				coefficients: regression.coefficients,
+				intercept: regression.intercept,
+				slope: regression.slope,
 				end: status.end
 			};
 			return auto(
@@ -55,11 +57,7 @@ function auto(
 				tempReference
 			);
 		} else {
-			results.push({
-				func: status.func,
-				start: status.start,
-				end: reference[count - 1]
-			});
+			results.push({ ...status, end: reference[count - 1] });
 			status = { start: reference[count - 1] };
 			return auto(
 				input,
